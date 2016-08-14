@@ -1,2 +1,21 @@
-# project_ahope1
-project ahope 1
+<p align="center">
+	<img src="https://github.com/studio-AHOPE/project_ahope1/blob/master/img1.jpg"><br><br>
+	This project is studio AHOPE's project!<br><br>
+	You can have interest in this project!<br><br>
+	Contact Us<br>
+	<a href="http://blog.naver.com/studio_ahope"> Naver Blog </a> <b> / </b>
+	<a href="https://fb.me/studio.ahope"> Facebook </a> <b> / </b>
+	<a href="https://www.instagram.com/studio_ahope/"> Instagram </a> <br>
+	<br><br>
+	
+</p>
+#	Credit
+	Team Leader : YuahP
+	Producing : YuahP
+	Programmer : YuahP, Jadru, Ara
+	Designer : Jadru
+
+#  Warning!
+<p align="center">
+	You <b> never </b> edit this project <b> without permission of our team!</b>
+</p>
