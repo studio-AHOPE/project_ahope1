@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="https://github.com/studio-AHOPE/project_ahope1/blob/master/img1.jpg"><br><br>
+	<img src="https://github.com/studio-AHOPE/project_ahope1/blob/master/introduce/img1.jpg"><br><br>
 	This project is studio AHOPE's project!<br><br>
 	You can have interest in this project!<br><br>
 	Contact Us<br>
