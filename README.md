@@ -10,12 +10,12 @@
 	
 </p>
 #	Credit
-	Team Leader : YuahP
+	Studio Leader : YuahP
 	Producing : YuahP
 	Programmer : YuahP, Jadru, Ara
 	Designer : Jadru, Ara
 
 #  Warning!
 <p align="center">
-	You <b> never </b> edit this project <b> without permission of our team!</b>
+	You <b> never </b> edit this project <b> without permission of our studio!</b>
 </p>
