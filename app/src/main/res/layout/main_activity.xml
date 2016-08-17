@@ -19,16 +19,34 @@
         android:elevation="32dp">
 
         <TextView
-            android:id="@+id/text_winfo1"
+            android:id="@+id/winfo1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="여기에는 지역명이여"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="25dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="25dp" />
+            android:text="20º"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textSize="60sp"
+            />
+        <TextView
+            android:id="@+id/winfo2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="location"
+            android:textSize="25sp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp" />
+
     </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="간단한 코멘트 서버와 연결"
+        android:id="@+id/comment"
+        android:layout_below="@+id/layout_weatherinfo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:textSize="40sp"/>
 
 </RelativeLayout>

@@ -6,6 +6,8 @@ import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import studio.ahope.project_ahope1.lib.ParsingInfo;
@@ -23,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
     ParsingInfo parsing;
     PermissionManager permanager;
     public final int requestPer = 1;
+    TextView winfo1;
+    TextView winfo2;
+    TextView comment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,16 +36,33 @@ public class MainActivity extends AppCompatActivity {
         permanager.autoRequest(this, this, request);
 
         setContentView(R.layout.main_activity);
-        getResource(R.drawable.testbg);
-        getWindow().setBackgroundDrawable(drawable);
-        drawable = null;
-
+        winfo1 = (TextView)findViewById(R.id.winfo1);
+        winfo2 = (TextView)findViewById(R.id.winfo2);
+        comment = (TextView)findViewById(R.id.comment);
+        themeEngine(0);
+        //number of 0(zero) theme is Normal theme for application
 
         /*while working
         if() {
             parsing.getPInfo("open");
         }
         */
+    }
+
+    private void themeEngine(int theme){
+        switch(theme){
+            case 0:
+                // back ground (it may be changed for connected server text
+                getResource(R.drawable.testbg);
+                getWindow().setBackgroundDrawable(drawable);
+                drawable = null; // it should be lunched every time when use getResource void
+                // text color adapted by theme
+                winfo1.setTextColor(getResources().getColor(android.R.color.black));
+                winfo2.setTextColor(getResources().getColor(android.R.color.black));
+                comment.setTextColor(getResources().getColor(android.R.color.white));
+                // more for btn bg image maybe
+            break;
+        }
     }
 
     @Override
