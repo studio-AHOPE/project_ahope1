@@ -13,7 +13,7 @@
 	Team Leader : YuahP
 	Producing : YuahP
 	Programmer : YuahP, Jadru, Ara
-	Designer : Jadru
+	Designer : Jadru, Ara
 
 #  Warning!
 <p align="center">
