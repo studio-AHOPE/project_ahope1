@@ -1,17 +1,25 @@
 package studio.ahope.project_ahope1;
 
 import android.Manifest;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.location.LocationManager;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import studio.ahope.project_ahope1.lib.LocationSystem;
 import studio.ahope.project_ahope1.lib.ParsingInfo;
 import studio.ahope.project_ahope1.lib.PermissionManager;
+
+/**
+ * Last update : 2016-08-17
+ */
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
     Drawable drawable;
     ParsingInfo parsing;
-    PermissionManager permanager;
     public final int requestPer = 1;
     TextView winfo1;
     TextView winfo2;
@@ -33,11 +40,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        permanager.autoRequest(this, this, request);
+        PermissionManager.autoRequest(this, this, request);
+        LocationSystem.startRequest(this);
 
         setContentView(R.layout.main_activity);
         winfo1 = (TextView)findViewById(R.id.winfo1);
         winfo2 = (TextView)findViewById(R.id.winfo2);
+        winfo2.setText(LocationSystem.getCountry(this));
         comment = (TextView)findViewById(R.id.comment);
         themeEngine(0);
         //number of 0(zero) theme is Normal theme for application
