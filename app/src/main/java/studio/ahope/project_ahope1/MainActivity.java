@@ -1,15 +1,12 @@
 package studio.ahope.project_ahope1;
 
 import android.Manifest;
-import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.location.LocationManager;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +15,7 @@ import studio.ahope.project_ahope1.lib.ParsingInfo;
 import studio.ahope.project_ahope1.lib.PermissionManager;
 
 /**
- * Last update : 2016-08-17
+ * Last update : 2016-08-18
  */
 
 public class MainActivity extends AppCompatActivity {
@@ -35,18 +32,19 @@ public class MainActivity extends AppCompatActivity {
     TextView winfo1;
     TextView winfo2;
     TextView comment;
+    Intent locationSystem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         PermissionManager.autoRequest(this, this, request);
-        LocationSystem.startRequest(this);
+        locationSystem = new Intent(this, LocationSystem.class);
+        startService(locationSystem);
 
         setContentView(R.layout.main_activity);
         winfo1 = (TextView)findViewById(R.id.winfo1);
         winfo2 = (TextView)findViewById(R.id.winfo2);
-        winfo2.setText(LocationSystem.getCountry(this));
         comment = (TextView)findViewById(R.id.comment);
         themeEngine(0);
         //number of 0(zero) theme is Normal theme for application
@@ -72,6 +70,13 @@ public class MainActivity extends AppCompatActivity {
                 // more for btn bg image maybe
             break;
         }
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+
+        stopService(locationSystem);
     }
 
     @Override
