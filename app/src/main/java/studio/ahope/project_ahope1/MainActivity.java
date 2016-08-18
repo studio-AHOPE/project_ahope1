@@ -2,6 +2,7 @@ package studio.ahope.project_ahope1;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -79,8 +80,20 @@ public class MainActivity extends AppCompatActivity {
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
             case requestPer: {
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED ) {
+                } else {
                     Toast.makeText(getApplicationContext(), R.string.perDefined, Toast.LENGTH_LONG).show();
                     finish();
+                }
+                break;
+            }
+            default : {
+                try {
+                    PermissionManager.iswait = false;
+                    PermissionManager.threadwait.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

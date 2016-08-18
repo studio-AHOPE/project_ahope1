@@ -7,11 +7,19 @@ import android.support.v4.app.ActivityCompat;
 
 /**
  * Created by YuahP on 2016-08-16.
- * Last update : 2016-08-17
+ * Last update : 2016-08-18
  */
 
 public class PermissionManager {
     public static int requestPer = 1;
+    public static Boolean iswait = false;
+    public static Thread threadwait = new Thread(){
+        public void run() {
+            if(iswait){
+
+            }
+        }
+    };
     public static Boolean getStatus(Context context, String permission) {
         if(ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED) {
             return true;
@@ -31,6 +39,8 @@ public class PermissionManager {
         for (String per : perList) {
             if(!getStatus(context, per)) {
                 requestPer(activity, per);
+                iswait = true;
+                threadwait.start();
             }
         }
     }

@@ -16,11 +16,6 @@ import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -36,11 +31,10 @@ public class ServiceSystem extends Service {
     private LocationManager locationManager;
     private SharedPreferences locationPref;
     private SharedPreferences.Editor lPedit;
-    private int requestUpdateTime;
-    private int requestUpdateDistance;
+    private int requestUpdateTime = 1000 * 30;
+    private int requestUpdateDistance = 10;
     private Double lastLat;
     private Double lastLon;
-    private FileOutputStream fileOutputStream;
     static WeatherInit wi;
 
     private LocationListener locationListener = new LocationListener() {
@@ -178,12 +172,16 @@ public class ServiceSystem extends Service {
     public void onDestroy() {
         super.onDestroy();
 
-        lPedit.putFloat("Lat", Float.parseFloat(lastLat.toString()));
-        lPedit.putFloat("Lon", Float.parseFloat(lastLon.toString()));
-        lPedit.putInt("Uptime", requestUpdateTime);
-        lPedit.putInt("Updist", requestUpdateDistance);
-        lPedit.putString("City", getCountry());
-        lPedit.apply();
+            if(lPedit != null) {
+                if (lastLat != null && lastLon != null) {
+                    lPedit.putFloat("Lat", Float.parseFloat(lastLat.toString()));
+                    lPedit.putFloat("Lon", Float.parseFloat(lastLon.toString()));
+                }
+                lPedit.putInt("Uptime", requestUpdateTime);
+                lPedit.putInt("Updist", requestUpdateDistance);
+                lPedit.putString("City", getCountry());
+                lPedit.apply();
+            }
     }
 
     public void checkAvailable() {
