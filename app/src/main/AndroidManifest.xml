@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".lib.LocationSystem">
+        <service android:name=".lib.ServiceSystem">
         </service>
     </application>
 

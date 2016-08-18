@@ -2,4 +2,5 @@
     <string name="app_name">project_ahope1</string>
     <string name="perDefined">You should accept permission for use This app!</string>
     <string name="loading">Loading</string>
+    <string name="failed">Failed</string>
 </resources>

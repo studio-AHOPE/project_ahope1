@@ -2,4 +2,5 @@
     <string name="app_name">project_ahope1</string>
     <string name="perDefined">이 앱을 사용하기 위해 권한을 허용해야 합니다!</string>
     <string name="loading">불러오는 중</string>
+    <string name="failed">실패함</string>
 </resources>

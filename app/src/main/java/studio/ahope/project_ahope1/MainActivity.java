@@ -12,8 +12,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import studio.ahope.project_ahope1.databinding.MainActivityBinding;
-import studio.ahope.project_ahope1.lib.LocationSystem;
-import studio.ahope.project_ahope1.lib.ParsingInfo;
+import studio.ahope.project_ahope1.lib.ServiceSystem;
 import studio.ahope.project_ahope1.lib.PermissionManager;
 
 /**
@@ -29,9 +28,8 @@ public class MainActivity extends AppCompatActivity {
     };
 
     Drawable drawable;
-    ParsingInfo parsing;
     public final int requestPer = 1;
-    Intent locationSystem;
+    Intent serviceSystem;
     public static MainActivityBinding binding;
 
     @Override
@@ -39,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         PermissionManager.autoRequest(this, this, request);
-        locationSystem = new Intent(this, LocationSystem.class);
-        startService(locationSystem);
+        serviceSystem = new Intent(this, ServiceSystem.class);
+        startService(serviceSystem);
 
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
         themeEngine(0);
@@ -73,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     public void onDestroy(){
         super.onDestroy();
 
-        stopService(locationSystem);
+        stopService(serviceSystem);
     }
 
     @Override

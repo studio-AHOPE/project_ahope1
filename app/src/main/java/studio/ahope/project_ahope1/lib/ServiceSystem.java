@@ -16,8 +16,14 @@ import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import studio.ahope.project_ahope1.MainActivity;
 import studio.ahope.project_ahope1.R;
@@ -26,8 +32,7 @@ import studio.ahope.project_ahope1.R;
  * Created by YuahP on 2016-08-16.
  * Last update : 2016-08-18
  */
-/* while working */
-public class LocationSystem extends Service {
+public class ServiceSystem extends Service {
     private LocationManager locationManager;
     private SharedPreferences locationPref;
     private SharedPreferences.Editor lPedit;
@@ -35,18 +40,23 @@ public class LocationSystem extends Service {
     private int requestUpdateDistance;
     private Double lastLat;
     private Double lastLon;
+    private FileOutputStream fileOutputStream;
+    static WeatherInit wi;
 
     private LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
             lPedit.putFloat("Lat", Float.parseFloat(String.valueOf(location.getLatitude())));
             lPedit.putFloat("Lon", Float.parseFloat(String.valueOf(location.getLongitude())));
+            lPedit.putString("City", getCountry());
             lPedit.apply();
             lastLat = location.getLatitude();
             lastLon = location.getLongitude();
 
-            //Log.i("LocationSystem", "Reloaded Location. Lat=" + String.valueOf(location.getLatitude()) + " Lon=" + String.valueOf(location.getLongitude()) );
-            MainActivity.binding.winfo2.setText(getCountry());
+            checkAvailable();
+            WeatherExtract();
+
+
         }
 
         @Override
@@ -63,8 +73,8 @@ public class LocationSystem extends Service {
         }
     };
 
-    public String checkProvider(Context context) {
-        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+    public String checkProvider() {
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             return LocationManager.GPS_PROVIDER;
         } else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
@@ -93,6 +103,15 @@ public class LocationSystem extends Service {
         }
     }
 
+    public Double getLat() {
+        return lastLat;
+    }
+
+    public Double getLon() {
+        return lastLon;
+    }
+
+
     public String getCountry() {
         List<Address> address = null;
         Geocoder geoCoder = new Geocoder(this);
@@ -105,7 +124,26 @@ public class LocationSystem extends Service {
             Address addresses = address.get(0);
             return addresses.getAdminArea() + " " + addresses.getLocality();
         } else {
-            return String.valueOf(R.string.loading);
+            return null;
+        }
+    }
+
+    public void WeatherExtract() {
+        WeatherTask wt = new WeatherTask();
+
+        try {
+            wi = wt.execute(lastLat, lastLon).get();
+
+            if(wi != null) {
+                lPedit.putFloat("temp", Float.valueOf(wi.getTemperature().toString()));
+                lPedit.putString("temp", wi.getWeather());
+                lPedit.putInt("cloudy", wi.getCloudy());
+                lPedit.putInt("snow", wi.getCloudy());
+                lPedit.putInt("rain", wi.getRain());
+            }
+
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
     }
 
@@ -124,6 +162,9 @@ public class LocationSystem extends Service {
 
         startRequest(this);
 
+        checkAvailable();
+        WeatherExtract();
+
     }
 
     @Override
@@ -141,7 +182,17 @@ public class LocationSystem extends Service {
         lPedit.putFloat("Lon", Float.parseFloat(lastLon.toString()));
         lPedit.putInt("Uptime", requestUpdateTime);
         lPedit.putInt("Updist", requestUpdateDistance);
+        lPedit.putString("City", getCountry());
         lPedit.apply();
+    }
+
+    public void checkAvailable() {
+        if(getCountry() != null) {
+            MainActivity.binding.winfo2.setText(getCountry());
+        } else {
+            MainActivity.binding.winfo2.setText(R.string.failed);
+            Log.i("w", String.valueOf(R.string.failed));
+        }
     }
 
     public IBinder onBind(Intent intent) {
