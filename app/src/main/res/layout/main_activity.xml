@@ -1,52 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="studio.ahope.project_ahope1.MainActivity">
+<layout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/main_layout"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="studio.ahope.project_ahope1.MainActivity">
 
-    <RelativeLayout
-        android:id="@+id/layout_weatherinfo"
-        android:layout_width="200dp"
-        android:layout_height="260dp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:background="@android:color/white"
-        android:elevation="32dp">
-
-        <TextView
-            android:id="@+id/winfo1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="20º"
-            android:layout_centerHorizontal="true"
+        <RelativeLayout
+            android:id="@+id/layout_weatherinfo"
+            android:layout_width="200dp"
+            android:layout_height="260dp"
             android:layout_centerVertical="true"
-            android:textSize="60sp"
-            />
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/white"
+            android:elevation="32dp">
+
+            <TextView
+                android:id="@+id/winfo1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20º"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textSize="60sp"
+                />
+            <TextView
+                android:id="@+id/winfo2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="location"
+                android:textSize="25sp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="15dp" />
+
+        </RelativeLayout>
+
         <TextView
-            android:id="@+id/winfo2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="location"
-            android:textSize="25sp"
-            android:layout_alignParentBottom="true"
+            android:text="간단한 코멘트 서버와 연결"
+            android:id="@+id/comment"
+            android:layout_below="@+id/layout_weatherinfo"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="15dp" />
+            android:layout_marginTop="40dp"
+            android:textSize="40sp"/>
 
     </RelativeLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="간단한 코멘트 서버와 연결"
-        android:id="@+id/comment"
-        android:layout_below="@+id/layout_weatherinfo"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:textSize="40sp"/>
-
-</RelativeLayout>
+</layout>
