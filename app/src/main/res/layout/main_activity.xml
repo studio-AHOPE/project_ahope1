@@ -24,7 +24,7 @@
                 android:id="@+id/winfo1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="20º"
+                android:text="20℃"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:textSize="60sp"
@@ -49,7 +49,10 @@
             android:layout_below="@+id/layout_weatherinfo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"
-            android:textSize="40sp"/>
+            android:layout_marginBottom="40dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:textSize="28sp" />
 
     </RelativeLayout>
 </layout>
