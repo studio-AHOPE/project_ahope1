@@ -12,8 +12,8 @@
 #	Credit
 	Studio Leader : YuahP
 	Producing : YuahP
-	Programmer : YuahP, Jadru, Ara
-	Designer : Jadru, Ara
+	Programmer : YuahP, Ara
+	Designer : Block
 
 #  Warning!
 <p align="center">
