@@ -13,7 +13,7 @@
 	Studio Leader : YuahP
 	Producing : YuahP
 	Programmer : YuahP, Ara
-	Designer : Block
+	Designer : Block, 준희
 
 #  Warning!
 <p align="center">
