@@ -1,6 +1,7 @@
 package studio.ahope.project_ahope1;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
@@ -9,16 +10,16 @@ import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import studio.ahope.project_ahope1.databinding.MainActivityBinding;
-import studio.ahope.project_ahope1.lib.ServiceSystem;
-import studio.ahope.project_ahope1.lib.PermissionManager;
+import studio.ahope.project_ahope1.Service.MainService;
+import studio.ahope.project_ahope1.Manager.PermissionManager;
 
 /**
- * Last update : 2016-08-18
+ * Last update : 2016-10-30
  */
+/* while working */
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,17 +29,18 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.ACCESS_COARSE_LOCATION
     };
 
-    Drawable drawable;
-    public final int requestPer = 1;
-    Intent serviceSystem;
-    public static MainActivityBinding binding;
+    private Drawable drawable;
+    private Intent serviceSystem;
+    private MainActivityBinding binding;
+    public static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
 
         PermissionManager.autoRequest(this, this, request);
-        serviceSystem = new Intent(this, ServiceSystem.class);
+        serviceSystem = new Intent(this, MainService.class);
         startService(serviceSystem);
 
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
@@ -79,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case requestPer: {
+            case 1: {
                 if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED ) {
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.perDefined, Toast.LENGTH_LONG).show();
@@ -87,15 +89,11 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             }
-            default : {
-                try {
-                    PermissionManager.iswait = false;
-                    PermissionManager.threadwait.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
         }
+    }
+
+    public MainActivityBinding getBinding(){
+        return this.binding;
     }
 
     public void getResource(int dr){

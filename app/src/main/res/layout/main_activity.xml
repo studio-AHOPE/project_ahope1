@@ -24,7 +24,7 @@
                 android:id="@+id/winfo1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="20℃"
+                android:text="0℃"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:textSize="60sp"

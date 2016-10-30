@@ -1,4 +1,4 @@
-package studio.ahope.project_ahope1.lib;
+package studio.ahope.project_ahope1.Service;
 
 import android.Manifest;
 import android.app.Service;
@@ -22,12 +22,15 @@ import java.util.concurrent.ExecutionException;
 
 import studio.ahope.project_ahope1.MainActivity;
 import studio.ahope.project_ahope1.R;
+import studio.ahope.project_ahope1.Manager.WeatherManager;
+import studio.ahope.project_ahope1.Task.WeatherTask;
 
 /**
- * Created by YuahP on 2016-08-16.
- * Last update : 2016-08-18
+ * Last update : 2016-10-30
  */
-public class ServiceSystem extends Service {
+/* while working */
+
+public class MainService extends Service {
     private LocationManager locationManager;
     private SharedPreferences locationPref;
     private SharedPreferences.Editor lPedit;
@@ -35,7 +38,7 @@ public class ServiceSystem extends Service {
     private int requestUpdateDistance = 10;
     private Double lastLat;
     private Double lastLon;
-    static WeatherInit wi;
+    private WeatherManager weatherManager;
 
     private LocationListener locationListener = new LocationListener() {
         @Override
@@ -48,7 +51,7 @@ public class ServiceSystem extends Service {
             lastLon = location.getLongitude();
 
             checkAvailable();
-            WeatherExtract();
+            weatherExtract();
 
 
         }
@@ -122,25 +125,6 @@ public class ServiceSystem extends Service {
         }
     }
 
-    public void WeatherExtract() {
-        WeatherTask wt = new WeatherTask();
-
-        try {
-            wi = wt.execute(lastLat, lastLon).get();
-
-            if(wi != null) {
-                lPedit.putFloat("temp", Float.valueOf(wi.getTemperature().toString()));
-                lPedit.putString("temp", wi.getWeather());
-                lPedit.putInt("cloudy", wi.getCloudy());
-                lPedit.putInt("snow", wi.getCloudy());
-                lPedit.putInt("rain", wi.getRain());
-            }
-
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -156,8 +140,8 @@ public class ServiceSystem extends Service {
 
         startRequest(this);
 
+        weatherExtract();
         checkAvailable();
-        WeatherExtract();
 
     }
 
@@ -184,12 +168,35 @@ public class ServiceSystem extends Service {
             }
     }
 
-    public void checkAvailable() {
-        if(getCountry() != null) {
-            MainActivity.binding.winfo2.setText(getCountry());
+    private void weatherExtract() {
+        WeatherTask wt = new WeatherTask();
+
+        try {
+            weatherManager = wt.execute(lastLat, lastLon).get();
+
+            if(weatherManager != null) {
+                lPedit.putFloat("temp", Float.valueOf(weatherManager.getTemperature().toString()));
+                lPedit.putString("temp", weatherManager.getWeather());
+                lPedit.putInt("cloudy", weatherManager.getCloudy());
+                lPedit.putInt("snow", weatherManager.getCloudy());
+                lPedit.putInt("rain", weatherManager.getRain());
+            }
+
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void checkAvailable() {
+        if(getCountry() != null && weatherManager != null ) {
+            //try {
+                ((MainActivity) MainActivity.context).getBinding().winfo1.setText(Integer.toString((int)Math.round(weatherManager.getTemperature())) + "℃");
+            //} catch (InterruptedException | ExecutionException e) {
+                //e.printStackTrace();
+           // }
+            ((MainActivity)MainActivity.context).getBinding().winfo2.setText(getCountry());
         } else {
-            MainActivity.binding.winfo2.setText(R.string.failed);
-            Log.i("w", String.valueOf(R.string.failed));
+            ((MainActivity)MainActivity.context).getBinding().winfo2.setText(R.string.failed);
         }
     }
 
