@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private Drawable drawable;
     private Intent serviceSystem;
     private MainActivityBinding binding;
+    private PermissionManager permissionManager = new PermissionManager();
     public static Context context;
 
     @Override
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         context = this;
 
-        PermissionManager.autoRequest(this, this, request);
+        permissionManager.autoRequest(this, this, request);
         serviceSystem = new Intent(this, MainService.class);
         startService(serviceSystem);
 
