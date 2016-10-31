@@ -21,12 +21,13 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import studio.ahope.project_ahope1.MainActivity;
+import studio.ahope.project_ahope1.Manager.PermissionManager;
 import studio.ahope.project_ahope1.R;
 import studio.ahope.project_ahope1.Manager.WeatherManager;
 import studio.ahope.project_ahope1.Task.WeatherTask;
 
 /**
- * Last update : 2016-10-30
+ * Last update : 2016-11-01
  */
 /* while working */
 
@@ -39,6 +40,14 @@ public class MainService extends Service {
     private Double lastLat;
     private Double lastLon;
     private WeatherManager weatherManager;
+    private PermissionManager permissionManager = new PermissionManager((MainActivity) MainActivity.context);
+    private Intent mainServiceIntent;
+
+    public final String[] requestPermission = {
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_NETWORK_STATE,
+            Manifest.permission.ACCESS_WIFI_STATE
+    };
 
     private LocationListener locationListener = new LocationListener() {
         @Override
@@ -128,9 +137,17 @@ public class MainService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
+        if(!permissionManager.getAllStatus(requestPermission)) {
+            permissionManager.checkPermission(requestPermission, R.string.requestPermission1Summary);
+            mainServiceIntent = new Intent(this, MainService.class);
+            ((MainActivity) MainActivity.context).stopService(mainServiceIntent);
+        } else {
+            onService();
         }
+
+    }
+
+    public void onService() {
         locationPref = getApplicationContext().getSharedPreferences("location", MODE_MULTI_PROCESS);
         lPedit = locationPref.edit();
         lastLat = (double) locationPref.getFloat("Lat", 0);
@@ -142,7 +159,6 @@ public class MainService extends Service {
 
         weatherExtract();
         checkAvailable();
-
     }
 
     @Override
@@ -166,6 +182,8 @@ public class MainService extends Service {
                 lPedit.putString("City", getCountry());
                 lPedit.apply();
             }
+
+        Log.e("ㅁㄴㅇㄹ","파괴됨");
     }
 
     private void weatherExtract() {
@@ -189,14 +207,10 @@ public class MainService extends Service {
 
     private void checkAvailable() {
         if(getCountry() != null && weatherManager != null ) {
-            //try {
-                ((MainActivity) MainActivity.context).getBinding().winfo1.setText(Integer.toString((int)Math.round(weatherManager.getTemperature())) + "℃");
-            //} catch (InterruptedException | ExecutionException e) {
-                //e.printStackTrace();
-           // }
-            ((MainActivity)MainActivity.context).getBinding().winfo2.setText(getCountry());
+            ((MainActivity) MainActivity.context).getBinding().winfo1.setText(Integer.toString((int)Math.round(weatherManager.getTemperature())) + "℃");
+            ((MainActivity) MainActivity.context).getBinding().winfo2.setText(getCountry());
         } else {
-            ((MainActivity)MainActivity.context).getBinding().winfo2.setText(R.string.failed);
+            ((MainActivity) MainActivity.context).getBinding().winfo2.setText(R.string.failed);
         }
     }
 

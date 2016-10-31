@@ -1,8 +1,5 @@
 package studio.ahope.project_ahope1.Manager;
 
-import android.os.AsyncTask;
-import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,19 +7,18 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 /**
- * Last update : 2016-10-30
+ * Last update : 2016-11-01
  */
 /* while working */
 
 public class WeatherManager {
 
-    final private String openWeatherURL = "http://api.openweathermap.org/data/2.5/weather";
+    private final String openWeatherURL = "http://api.openweathermap.org/data/2.5/weather";
 
     private Double lat;
     private Double lon;
@@ -42,16 +38,16 @@ public class WeatherManager {
     private void setRain(int rain){ this.rain = rain;}
     private void setCity(String city){ this.city = city;}
 
-    public Double getLat(){ return lat;}
-    public Double getIon() { return lon;}
-    public String getWeather(){ return weather;}
-    public Double getTemperature() { return temperature;}
-    public int getCloudy() { return cloudy; }
-    public int getSnow() { return snow; }
-    public int getRain() { return rain; }
-    public String getCity() { return city; }
+    public final Double getLat(){ return lat;}
+    public final Double getIon() { return lon;}
+    public final String getWeather(){ return weather;}
+    public final Double getTemperature() { return temperature;}
+    public final int getCloudy() { return cloudy; }
+    public final int getSnow() { return snow; }
+    public final int getRain() { return rain; }
+    public final String getCity() { return city; }
 
-    public WeatherManager getWeather(Double lat,Double lon) throws JSONException, IOException{
+    public final WeatherManager getWeather(Double lat,Double lon) throws JSONException, IOException{
         String urlString = openWeatherURL + "?lat="+lat+"&lon="+lon+"&APPID=61ddd0ba40ce320b65120bf9f7583dc4";
 
         URL url = new URL(urlString);

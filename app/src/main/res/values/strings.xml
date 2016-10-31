@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">project_ahope1</string>
-    <string name="perDefined">You should accept permission for use This app!</string>
+    <string name="perDefined">You should accept permission for use this app!</string>
     <string name="loading">Loading</string>
     <string name="failed">Failed</string>
+    <string name="alert">Alert</string>
+    <string name="requestOverlaySummary">You should accept overlay permission for use this app!</string>
+    <string name="settingOverlayButton">Overlay Setting</string>
+    <string name="requestPermission1Summary">It needs network state and WI-FI state, location information for get the weather from network. </string>
+    <string name="settingPermissionButton">Permission Setting</string>
 </resources>

@@ -1,9 +1,7 @@
 package studio.ahope.project_ahope1;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -17,32 +15,23 @@ import studio.ahope.project_ahope1.Service.MainService;
 import studio.ahope.project_ahope1.Manager.PermissionManager;
 
 /**
- * Last update : 2016-10-30
+ * Last update : 2016-11-01
  */
 /* while working */
 
 public class MainActivity extends AppCompatActivity {
 
-    // setting permission
-
-    public final String[] request = {
-            Manifest.permission.ACCESS_COARSE_LOCATION
-    };
-
     private Drawable drawable;
-    private Intent serviceSystem;
+    private Intent MainService;
     private MainActivityBinding binding;
-    private PermissionManager permissionManager = new PermissionManager();
+    private PermissionManager permissionManager;
     public static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
-
-        permissionManager.autoRequest(this, this, request);
-        serviceSystem = new Intent(this, MainService.class);
-        startService(serviceSystem);
+        permissionManager = new PermissionManager(this);
 
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
         themeEngine(0);
@@ -53,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
             parsing.getPInfo("open");
         }
         */
+
+        MainService = new Intent(this, MainService.class);
+        startService(MainService);
     }
 
     private void themeEngine(int theme){
@@ -75,20 +67,19 @@ public class MainActivity extends AppCompatActivity {
     public void onDestroy(){
         super.onDestroy();
 
-        stopService(serviceSystem);
+        stopService(MainService);
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case 1: {
-                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED ) {
+                if(permissionManager.getAllStatus(permissions)) {
+                    startService(MainService);
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.perDefined, Toast.LENGTH_LONG).show();
                     finish();
                 }
-                break;
             }
         }
     }
@@ -98,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getResource(int dr){
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             drawable = ContextCompat.getDrawable(getApplicationContext(),dr);
         }else{
             drawable = getResources().getDrawable(dr);

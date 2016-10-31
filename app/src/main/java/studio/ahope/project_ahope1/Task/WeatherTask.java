@@ -1,11 +1,8 @@
 package studio.ahope.project_ahope1.Task;
 
 import android.os.AsyncTask;
-
 import org.json.JSONException;
-
 import java.io.IOException;
-
 import studio.ahope.project_ahope1.Manager.WeatherManager;
 
 /**
@@ -16,7 +13,7 @@ import studio.ahope.project_ahope1.Manager.WeatherManager;
 public class WeatherTask extends AsyncTask<Double, Void, WeatherManager> {
 
     @Override
-    public WeatherManager doInBackground(Double... params) {
+    public final WeatherManager doInBackground(Double... params) {
 
         WeatherManager client = new WeatherManager();
 

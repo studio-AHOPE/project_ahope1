@@ -3,4 +3,9 @@
     <string name="perDefined">이 앱을 사용하기 위해 권한을 허용해야 합니다!</string>
     <string name="loading">불러오는 중</string>
     <string name="failed">실패함</string>
+    <string name="alert">알림</string>
+    <string name="requestOverlaySummary">이 앱을 사용하기 위해 오버레이 권한을 허용해야 합니다!</string>
+    <string name="settingOverlayButton">오버레이 설정</string>
+    <string name="requestPermission1Summary">인터넷에서 날씨를 불러오기 위해서 데이터 상태, 와이파이 상태, 위치 정보가 필요합니다.</string>
+    <string name="settingPermissionButton">권한 설정</string>
 </resources>
