@@ -16,7 +16,7 @@ import java.util.List;
 import studio.ahope.project_ahope1.R;
 
 /**
- * Last update : 2016-11-01
+ * Last update : 2016-11-03
  */
 /* while working */
 
@@ -34,10 +34,7 @@ public class PermissionManager {
     }
 
     private void requestPermission(String[] permission) {
-        ActivityCompat.requestPermissions(targetActivity,
-                permission,
-            requestPermissionCallback
-        );
+        ActivityCompat.requestPermissions(targetActivity, permission, requestPermissionCallback);
     }
 
     private void requestOverlayPermission() {

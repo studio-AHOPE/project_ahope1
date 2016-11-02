@@ -10,12 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import studio.ahope.project_ahope1.Event.PermissionEvent;
 import studio.ahope.project_ahope1.databinding.MainActivityBinding;
 import studio.ahope.project_ahope1.Service.MainService;
 import studio.ahope.project_ahope1.Manager.PermissionManager;
 
 /**
- * Last update : 2016-11-01
+ * Last update : 2016-11-03
  */
 /* while working */
 
@@ -25,23 +26,20 @@ public class MainActivity extends AppCompatActivity {
     private Intent MainService;
     private MainActivityBinding binding;
     private PermissionManager permissionManager;
-    public static Context context;
+    PermissionEvent permissionEvent;
+
+    public static Context mainActivityContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = this;
+        mainActivityContext = this;
         permissionManager = new PermissionManager(this);
+        startBroadcast(this);
 
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
         themeEngine(0);
         //number of 0(zero) theme is Normal theme for application
-
-        /*while working
-        if() {
-            parsing.getPInfo("open");
-        }
-        */
 
         MainService = new Intent(this, MainService.class);
         startService(MainService);
@@ -67,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     public void onDestroy(){
         super.onDestroy();
 
+        permissionEvent.stop("NEED_PERMISSION");
         stopService(MainService);
     }
 
@@ -77,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 if(permissionManager.getAllStatus(permissions)) {
                     startService(MainService);
                 } else {
-                    Toast.makeText(getApplicationContext(), R.string.perDefined, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), R.string.permissionDefined, Toast.LENGTH_LONG).show();
                     finish();
                 }
             }
@@ -86,6 +85,12 @@ public class MainActivity extends AppCompatActivity {
 
     public MainActivityBinding getBinding(){
         return this.binding;
+    }
+
+    private void startBroadcast(Context context) {
+        permissionEvent = new PermissionEvent(context);
+        permissionEvent.start("NEED_PERMISSION");
+
     }
 
     public void getResource(int dr){

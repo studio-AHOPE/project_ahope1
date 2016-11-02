@@ -14,20 +14,19 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import studio.ahope.project_ahope1.Event.ServiceEvent;
 import studio.ahope.project_ahope1.MainActivity;
-import studio.ahope.project_ahope1.Manager.PermissionManager;
 import studio.ahope.project_ahope1.R;
 import studio.ahope.project_ahope1.Manager.WeatherManager;
 import studio.ahope.project_ahope1.Task.WeatherTask;
 
 /**
- * Last update : 2016-11-01
+ * Last update : 2016-11-03
  */
 /* while working */
 
@@ -40,14 +39,7 @@ public class MainService extends Service {
     private Double lastLat;
     private Double lastLon;
     private WeatherManager weatherManager;
-    private PermissionManager permissionManager = new PermissionManager((MainActivity) MainActivity.context);
-    private Intent mainServiceIntent;
-
-    public final String[] requestPermission = {
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_NETWORK_STATE,
-            Manifest.permission.ACCESS_WIFI_STATE
-    };
+    private ServiceEvent serviceEvent;
 
     private LocationListener locationListener = new LocationListener() {
         @Override
@@ -137,13 +129,11 @@ public class MainService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        if(!permissionManager.getAllStatus(requestPermission)) {
-            permissionManager.checkPermission(requestPermission, R.string.requestPermission1Summary);
-            mainServiceIntent = new Intent(this, MainService.class);
-            ((MainActivity) MainActivity.context).stopService(mainServiceIntent);
-        } else {
-            onService();
-        }
+        serviceEvent = new ServiceEvent(this);
+        serviceEvent.start("ALL_PASSED_PERMISSION");
+        Intent permissionEvent = new Intent("studio.ahope.project_ahope1.NEED_PERMISSION");
+        sendBroadcast(permissionEvent);
+        onService();
 
     }
 
@@ -171,19 +161,17 @@ public class MainService extends Service {
 
     public void onDestroy() {
         super.onDestroy();
-
-            if(lPedit != null) {
-                if (lastLat != null && lastLon != null) {
-                    lPedit.putFloat("Lat", Float.parseFloat(lastLat.toString()));
-                    lPedit.putFloat("Lon", Float.parseFloat(lastLon.toString()));
-                }
-                lPedit.putInt("Uptime", requestUpdateTime);
-                lPedit.putInt("Updist", requestUpdateDistance);
-                lPedit.putString("City", getCountry());
-                lPedit.apply();
+        serviceEvent.stop("ALL_PASSED_PERMISSION");
+        if(lPedit != null) {
+            if (lastLat != null && lastLon != null) {
+                lPedit.putFloat("Lat", Float.parseFloat(lastLat.toString()));
+                lPedit.putFloat("Lon", Float.parseFloat(lastLon.toString()));
             }
-
-        Log.e("ㅁㄴㅇㄹ","파괴됨");
+            lPedit.putInt("Uptime", requestUpdateTime);
+            lPedit.putInt("Updist", requestUpdateDistance);
+            lPedit.putString("City", getCountry());
+            lPedit.apply();
+        }
     }
 
     private void weatherExtract() {
@@ -207,10 +195,10 @@ public class MainService extends Service {
 
     private void checkAvailable() {
         if(getCountry() != null && weatherManager != null ) {
-            ((MainActivity) MainActivity.context).getBinding().winfo1.setText(Integer.toString((int)Math.round(weatherManager.getTemperature())) + "℃");
-            ((MainActivity) MainActivity.context).getBinding().winfo2.setText(getCountry());
+            ((MainActivity) MainActivity.mainActivityContext).getBinding().winfo1.setText(Integer.toString((int)Math.round(weatherManager.getTemperature())) + "℃");
+            ((MainActivity) MainActivity.mainActivityContext).getBinding().winfo2.setText(getCountry());
         } else {
-            ((MainActivity) MainActivity.context).getBinding().winfo2.setText(R.string.failed);
+            ((MainActivity) MainActivity.mainActivityContext).getBinding().winfo2.setText(R.string.failed);
         }
     }
 
