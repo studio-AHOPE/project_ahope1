@@ -29,8 +29,8 @@ public class PermissionManager {
     public PermissionManager(Activity activity) {
         targetActivity = activity;
         targetContext = (Context) targetActivity;
-        requestPermissionDialog = new DialogManager(targetActivity, 0);
-        requestOverlayDialog = new DialogManager(targetActivity, 0);
+        requestPermissionDialog = new DialogManager(targetActivity);
+        requestOverlayDialog = new DialogManager(targetActivity);
     }
 
     private void requestPermission(String[] permission) {
@@ -67,29 +67,29 @@ public class PermissionManager {
                 }
             }
             if (list.size() > 0) {
-                requestPermissionDialog.setDialogTitle(R.string.alert)
-                        .setDialogMessage(alertMessage)
-                        .getDialogPositiveListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        requestPermission(list.toArray(new String[list.size()]));
-                    }
-                };
-                requestPermissionDialog.setDialogPositiveButton(R.string.settingPermissionButton)
-                        .dialogShow();
+                requestPermissionDialog.setAlertDialogTitle(R.string.alert)
+                        .setAlertDialogMessage(alertMessage)
+                        .setAlertDialogPositiveListener(new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                requestPermission(list.toArray(new String[list.size()]));
+                            }
+                        });
+                requestPermissionDialog.setAlertDialogPositiveButton(R.string.settingPermissionButton)
+                        .alertDialogShow();
             }
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if(!Settings.canDrawOverlays(targetContext)) {
-                    requestOverlayDialog.setDialogTitle(R.string.alert)
-                            .setDialogMessage(R.string.requestOverlaySummary)
-                            .getDialogPositiveListener = new DialogInterface.OnClickListener() {
+                    requestOverlayDialog.setAlertDialogTitle(R.string.alert)
+                            .setAlertDialogMessage(R.string.requestOverlaySummary)
+                            .setAlertDialogNegativeListener(new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     requestOverlayPermission();
                                 }
-                            };
-                    requestOverlayDialog.setDialogPositiveButton(R.string.settingOverlayButton)
-                            .dialogShow();
+                            });
+                    requestOverlayDialog.setAlertDialogPositiveButton(R.string.settingOverlayButton)
+                            .alertDialogShow();
                 }
             }
         }
