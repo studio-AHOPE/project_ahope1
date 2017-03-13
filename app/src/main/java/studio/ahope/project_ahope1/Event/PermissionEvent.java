@@ -1,19 +1,18 @@
 package studio.ahope.project_ahope1.Event;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
+import studio.ahope.project_ahope1.MainActivity;
 import studio.ahope.project_ahope1.Manager.BroadcastManager;
 import studio.ahope.project_ahope1.Manager.PermissionManager;
 import studio.ahope.project_ahope1.R;
 import studio.ahope.project_ahope1.Service.MainService;
 
 /**
- * Last update : 2016-11-03
+ * Last update : 2016-11-08
  */
 /* while working */
 
@@ -31,20 +30,35 @@ public class PermissionEvent {
         parentsContext = context;
     }
 
-    public void start(String message) {
+    public PermissionEvent start(String message) {
         switch (message) {
             case NEED_PERMISSION_MESSAGE :
-                NEED_PERMISSION(parentsContext, message);
+                if(broadcastManager_NEED_PERMISSION == null){
+                    set(message);
+                }
+                Intent permissionEvent = new Intent("studio.ahope.project_ahope1.NEED_PERMISSION");
+                parentsContext.sendBroadcast(permissionEvent);
                 break;
         }
+        return this;
     }
 
-    public void stop(String message) {
+    public PermissionEvent stop(String message) {
         switch (message) {
             case NEED_PERMISSION_MESSAGE :
                 broadcastManager_NEED_PERMISSION.disableReceiver();
                 break;
         }
+        return this;
+    }
+
+    public PermissionEvent set(String message) {
+        switch (message) {
+            case NEED_PERMISSION_MESSAGE :
+                NEED_PERMISSION(parentsContext);
+                break;
+        }
+        return this;
     }
 
     public BroadcastManager get(String message) {
@@ -55,14 +69,14 @@ public class PermissionEvent {
         return null;
     }
 
-    private void NEED_PERMISSION(Context context, String message) {
+    private void NEED_PERMISSION(Context context) {
         broadcastManager_NEED_PERMISSION = new BroadcastManager(context, NEED_PERMISSION);
-        broadcastManager_NEED_PERMISSION.setAction(message);
+        broadcastManager_NEED_PERMISSION.setAction(NEED_PERMISSION);
         broadcastManager_NEED_PERMISSION.setReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(NEED_PERMISSION)) {
-                    PermissionManager permissionManager = new PermissionManager((Activity) context);
+                    PermissionManager permissionManager = new PermissionManager((MainActivity) context);
                     if(!permissionManager.getAllStatus(requestPermission)) {
                         permissionManager.checkPermission(requestPermission, R.string.requestPermission1Summary);
                         Intent serviceIntent = new Intent(context, MainService.class);

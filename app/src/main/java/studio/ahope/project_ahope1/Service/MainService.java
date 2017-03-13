@@ -20,13 +20,11 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import studio.ahope.project_ahope1.Event.ServiceEvent;
-import studio.ahope.project_ahope1.MainActivity;
-import studio.ahope.project_ahope1.R;
 import studio.ahope.project_ahope1.Manager.WeatherManager;
 import studio.ahope.project_ahope1.Task.WeatherTask;
 
 /**
- * Last update : 2016-11-03
+ * Last update : 2016-11-08
  */
 /* while working */
 
@@ -120,7 +118,7 @@ public class MainService extends Service {
         }
         if (address != null && address.size() > 0) {
             Address addresses = address.get(0);
-            return addresses.getAdminArea() + " " + addresses.getLocality();
+            return addresses.getAdminArea() + " " + addresses.getLocality() + " " + addresses.getSubLocality();
         } else {
             return null;
         }
@@ -130,10 +128,10 @@ public class MainService extends Service {
     public void onCreate() {
         super.onCreate();
         serviceEvent = new ServiceEvent(this);
-        serviceEvent.start("ALL_PASSED_PERMISSION");
+        serviceEvent.set("ALL_PASSED_PERMISSION").start("ALL_PASSED_PERMISSION");
+
         Intent permissionEvent = new Intent("studio.ahope.project_ahope1.NEED_PERMISSION");
         sendBroadcast(permissionEvent);
-        onService();
 
     }
 
@@ -194,12 +192,10 @@ public class MainService extends Service {
     }
 
     private void checkAvailable() {
-        if(getCountry() != null && weatherManager != null ) {
-            ((MainActivity) MainActivity.mainActivityContext).getBinding().winfo1.setText(Integer.toString((int)Math.round(weatherManager.getTemperature())) + "℃");
-            ((MainActivity) MainActivity.mainActivityContext).getBinding().winfo2.setText(getCountry());
-        } else {
-            ((MainActivity) MainActivity.mainActivityContext).getBinding().winfo2.setText(R.string.failed);
-        }
+        Intent activityEventIntent = new Intent("studio.ahope.project_ahope1.CHANGE_WEATHER_PROFILE");
+        activityEventIntent.putExtra("Location", getCountry());
+        activityEventIntent.putExtra("Temp", weatherManager.getTemperature());
+        sendBroadcast(activityEventIntent);
     }
 
     public IBinder onBind(Intent intent) {

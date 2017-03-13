@@ -10,13 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import studio.ahope.project_ahope1.Event.ActivityEvent;
 import studio.ahope.project_ahope1.Event.PermissionEvent;
 import studio.ahope.project_ahope1.databinding.MainActivityBinding;
 import studio.ahope.project_ahope1.Service.MainService;
 import studio.ahope.project_ahope1.Manager.PermissionManager;
 
 /**
- * Last update : 2016-11-03
+ * Last update : 2016-11-08
  */
 /* while working */
 
@@ -26,14 +27,12 @@ public class MainActivity extends AppCompatActivity {
     private Intent MainService;
     private MainActivityBinding binding;
     private PermissionManager permissionManager;
+    ActivityEvent activityEvent;
     PermissionEvent permissionEvent;
-
-    public static Context mainActivityContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainActivityContext = this;
         permissionManager = new PermissionManager(this);
         startBroadcast(this);
 
@@ -90,7 +89,8 @@ public class MainActivity extends AppCompatActivity {
     private void startBroadcast(Context context) {
         permissionEvent = new PermissionEvent(context);
         permissionEvent.start("NEED_PERMISSION");
-
+        activityEvent = new ActivityEvent(this);
+        activityEvent.set("CHANGE_WEATHER_PROFILE");
     }
 
     public void getResource(int dr){

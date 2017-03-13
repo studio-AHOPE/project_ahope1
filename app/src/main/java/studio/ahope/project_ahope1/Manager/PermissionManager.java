@@ -16,7 +16,7 @@ import java.util.List;
 import studio.ahope.project_ahope1.R;
 
 /**
- * Last update : 2016-11-04
+ * Last update : 2016-11-08
  */
 /* while working */
 
@@ -67,7 +67,7 @@ public class PermissionManager {
                 }
             }
             if (list.size() > 0) {
-                requestPermissionDialog.setAlertDialogTitle(R.string.alert)
+                requestPermissionDialog.setAlertDialog().setAlertDialogTitle(R.string.alert)
                         .setAlertDialogMessage(alertMessage)
                         .setAlertDialogPositiveListener(new DialogInterface.OnClickListener() {
                             @Override
@@ -77,10 +77,11 @@ public class PermissionManager {
                         });
                 requestPermissionDialog.setAlertDialogPositiveButton(R.string.settingPermissionButton)
                         .alertDialogShow();
+
             }
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if(!Settings.canDrawOverlays(targetContext)) {
-                    requestOverlayDialog.setAlertDialogTitle(R.string.alert)
+                    requestOverlayDialog.setAlertDialog().setAlertDialogTitle(R.string.alert)
                             .setAlertDialogMessage(R.string.requestOverlaySummary)
                             .setAlertDialogNegativeListener(new DialogInterface.OnClickListener() {
                                 @Override

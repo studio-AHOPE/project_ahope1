@@ -3,13 +3,12 @@ package studio.ahope.project_ahope1.Event;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import studio.ahope.project_ahope1.Manager.BroadcastManager;
 import studio.ahope.project_ahope1.Service.MainService;
 
 /**
- * Last update : 2016-11-03
+ * Last update : 2016-11-08
  */
 /* while working */
 
@@ -22,20 +21,35 @@ public class ServiceEvent {
         parentsContext = context;
     }
 
-    public void start(String message) {
+    public ServiceEvent start(String message) {
         switch (message) {
             case ALL_PASSED_PERMISSION_MESSAGE :
-                ALL_PASSED_PERMISSION(parentsContext, message);
+                if(broadcastManager_ALL_PASSED_PERMISSION == null){
+                    set(message);
+                }
+                Intent serviceEvent = new Intent("studio.ahope.project_ahope1.ALL_PASSED_PERMISSION");
+                parentsContext.sendBroadcast(serviceEvent);
                 break;
         }
+        return this;
     }
 
-    public void stop(String message) {
+    public ServiceEvent stop(String message) {
         switch (message) {
             case ALL_PASSED_PERMISSION_MESSAGE :
                 broadcastManager_ALL_PASSED_PERMISSION.disableReceiver();
                 break;
         }
+        return this;
+    }
+
+    public ServiceEvent set(String message) {
+        switch (message) {
+            case ALL_PASSED_PERMISSION_MESSAGE :
+                ALL_PASSED_PERMISSION(parentsContext);
+                break;
+        }
+        return this;
     }
 
     public BroadcastManager get(String message) {
@@ -46,9 +60,9 @@ public class ServiceEvent {
         return null;
     }
 
-    private void ALL_PASSED_PERMISSION(Context context, String message) {
+    private void ALL_PASSED_PERMISSION(Context context) {
         broadcastManager_ALL_PASSED_PERMISSION = new BroadcastManager(context, ALL_PASSED_PERMISSION);
-        broadcastManager_ALL_PASSED_PERMISSION.setAction(message);
+        broadcastManager_ALL_PASSED_PERMISSION.setAction(ALL_PASSED_PERMISSION);
         broadcastManager_ALL_PASSED_PERMISSION.setReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {

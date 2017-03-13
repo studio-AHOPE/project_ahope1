@@ -7,6 +7,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
@@ -196,7 +197,10 @@ public class DialogManager {
     }
 
     public Boolean getAlertDialogShowStatus() {
-        return alertDialogShow.isShowing();
+        if(alertDialogShow != null) {
+            return alertDialogShow.isShowing();
+        }
+        return false;
     }
 
     public void setAlertDialogPositiveListener(DialogInterface.OnClickListener listener) {
